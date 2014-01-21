@@ -28,7 +28,7 @@ package info.jchein.pwstatus.impl;
  * @author John
  *
  */
-public final class ProtectedCharSequence implements CharSequence {
+final class ProtectedCharSequence implements CharSequence {
 	/**
 	 * Factory method for retrieving a String-preventing CharSequence decorator from an unprotected
 	 * CharSequence of any other type.
@@ -94,10 +94,13 @@ public final class ProtectedCharSequence implements CharSequence {
 
 	@Override
 	public String toString() {
+		return "";
+		/*
 		throw 
 			new UnsupportedOperationException(
 				"Sensitive data must not be transformed to an immutable representation/."
-			);	
+			);
+		*/
 	}
 	
 	void destroy() {

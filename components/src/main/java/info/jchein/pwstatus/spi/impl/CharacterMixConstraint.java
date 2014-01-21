@@ -1,7 +1,7 @@
-package info.jchein.pwstatus.impl;
+package info.jchein.pwstatus.spi.impl;
 
 import info.jchein.pwstatus.spi.IPasswordConstraintSpi;
-import info.jchein.pwstatus.spi.PasswordConstraint;
+import info.jchein.pwstatus.spi.Deployed;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,15 +12,15 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 @Component
-@PasswordConstraint
+@Deployed
 public class CharacterMixConstraint implements IPasswordConstraintSpi {
-	private static final String CHARSET_REGEX = "^[a-z0-9]*$";
+	private static final String CHARSET_REGEX = "[^a-z0-9]";
 	private static final Pattern CHARSET_PATTERN = Pattern.compile(CHARSET_REGEX);
 
-	private static final String MIN_DIGITS_REGEX = "[0-9]";
+	private static final String MIN_DIGITS_REGEX = "\\d";
 	private static final Pattern MIN_DIGITS_PATTERN = Pattern.compile(MIN_DIGITS_REGEX);
 
-	private static final String MIN_ALPHA_REGEX = "[a-z]";
+	private static final String MIN_ALPHA_REGEX = "\\p{Lower}";
 	private static final Pattern MIN_ALPHA_PATTERN = Pattern.compile(MIN_ALPHA_REGEX);
 
 	// TODO: Localization?
@@ -69,9 +69,9 @@ public class CharacterMixConstraint implements IPasswordConstraintSpi {
 		final Matcher minAlpha_matcher = MIN_ALPHA_PATTERN.matcher(pwText);
 		final List<String> returnValueList;
 		
-		if( charSet_matcher.matches() ) { 
-			if( minDigit_matcher.matches() ) {
-				if( minAlpha_matcher.matches() ) {
+		if( charSet_matcher.find() == false) { 
+			if( minDigit_matcher.find() == true) {
+				if( minAlpha_matcher.find() == true) {
 					// No errors!
 					returnValueList = null;
 				} else {
@@ -79,7 +79,7 @@ public class CharacterMixConstraint implements IPasswordConstraintSpi {
 					returnValueList = MIN_ALPHA_ERROR;
 				}
 			} else {
-				if( minAlpha_matcher.matches() ) {
+				if( minAlpha_matcher.find() == true) {
 					// One error--MIN_DIGITS
 					returnValueList = MIN_DIGITS_ERROR;
 				} else {
@@ -88,16 +88,16 @@ public class CharacterMixConstraint implements IPasswordConstraintSpi {
 				}
 			}
 		} else {
-			if( minDigit_matcher.matches() ) {
-				if( minAlpha_matcher.matches() ) {
+			if( minDigit_matcher.find() == true) {
+				if( minAlpha_matcher.find() == true) {
 					// One error--MIN_CHARSET!
-					returnValueList = null;
+					returnValueList = CHARSET_ERROR;
 				} else {
 					// Two errors--MIN_CHARSET and MIN_ALPHA
 					returnValueList = CHARSET_MIN_ALPHA_ERRORS;
 				}
 			} else {
-				if( minAlpha_matcher.matches() ) {
+				if( minAlpha_matcher.find() == true) {
 					// Two errors--MIN_CHARSET and MIN_DIGITS
 					returnValueList = CHARSET_MIN_DIGITS_ERRORS;
 				} else {

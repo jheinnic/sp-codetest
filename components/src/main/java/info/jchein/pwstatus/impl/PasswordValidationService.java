@@ -5,7 +5,7 @@ import info.jchein.pwstatus.IPasswordValidationService;
 import info.jchein.pwstatus.model.PWStatusFactory;
 import info.jchein.pwstatus.model.PasswordValidity;
 import info.jchein.pwstatus.spi.IPasswordConstraintSpi;
-import info.jchein.pwstatus.spi.PasswordConstraint;
+import info.jchein.pwstatus.spi.Deployed;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class PasswordValidationService implements IPasswordValidationService {
 	private static final Logger LOG = LoggerFactory.getLogger(PasswordValidationService.class);
 	
     @Autowired
-    @PasswordConstraint
+    @Deployed
     Set<IPasswordConstraintSpi> constraints;
 
 	@Override
@@ -61,9 +61,9 @@ public class PasswordValidationService implements IPasswordValidationService {
 					resultMessage = PWStatusFactory.createIncompletePasswordValidityTest(errorsFound);
 				}
 			} else if (allTestsEvaluated) {
-				resultMessage = PWStatusFactory.createIncompletePasswordValidityTest();
-			} else {
 				resultMessage = PWStatusFactory.createPassedPasswordValidityTest();
+			} else {
+				resultMessage = PWStatusFactory.createIncompletePasswordValidityTest();
 			}
 		} catch (Throwable e) { 
 			LOG.error("Unexpected exception thrown within base implementation logic!!", e);

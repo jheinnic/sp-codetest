@@ -1,14 +1,14 @@
 package info.jchein.pwstatus.fixtures.spi;
 
 import info.jchein.pwstatus.spi.IPasswordConstraintSpi;
-import info.jchein.pwstatus.spi.PasswordConstraint;
+import info.jchein.pwstatus.spi.Deployed;
 
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 @Component
-@PasswordConstraint
+@Deployed
 public class NeverFailConstraint implements IPasswordConstraintSpi {
 
 	@Override
