@@ -16,37 +16,84 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 public class PasswordValidity implements Serializable {
     /**
 	 */
-	private static final long serialVersionUID = -103316631552947193L;
+	private static final long serialVersionUID = 2351663131446046724L;
 	
-	private boolean valid;
-    private ArrayList<String> errors;
+	public enum ResultKind {
+		/** 
+		 * Result code indicating that all password constraint tests were checked and passed.
+		 */
+		VALID,
+		
+		/**
+		 * Result code indicating that some constraint tests failed to evaluate, but those that
+		 * did evaluate returned no errors.  The tests that did not evaluate may or may not have
+		 * been intended to find errors.
+		 */
+		UNKNOWN,
+		
+		/**
+		 * Result code indicating that some constraint tests failed to evaluate, but at least one
+		 * of those that did evaluate returned one or more errors.  The tests that did not evaluate
+		 * might have found additional errors if they ran as intended.
+		 */
+		UNKNOWN_INVALID,
+		
+		/**
+		 * Result code indicating that all password constraint tests were checked and one or more tests
+		 * produced one or more errors.
+		 */
+		INVALID;
+	}
+	
+	private ResultKind result;
+	
+    private List<String> errors;
     
-    PasswordValidity() {
-    	this.valid = true;
-    	this.errors = new ArrayList<String>(0);
+    /**
+     * Entity bean constraints require a public no-argument constructor.  The object returned by this 
+     * constructor is in the state of a valid result.  Use a factory method to access other valid 
+     * permutations of state.
+     */
+    public PasswordValidity() {
+    	this.result = ResultKind.VALID;
+    	this.errors = EMPTY_LIST;
     }
     
     @JsonGetter
-	public boolean isValid() {
-		return valid;
+	public ResultKind getResult() {
+		return result;
 	}
     
     @JsonSetter
-	public void setValid(boolean valid) {
-		this.valid = valid;
+	void setResult(ResultKind result) {
+		this.result = result;
 	}
 	
+    /**
+     * Immutable empty list singleton--no need to allocate more than one 
+     */
+    private static final List<String> EMPTY_LIST = Collections.<String> emptyList();
+    
+    /**
+     * Returns an unmodifiable list of error message strings.  This should only be set when 
+     * getResult() returns ResultKind.UNKNOWN_INVALID or ResultKind.INVALID.
+     * 
+     * @return
+     */
 	@JsonGetter
 	public List<String> getErrors() {
-		if( errors != null ) {
-			return new ArrayList<String>(errors);
-		} else {
-			return Collections.<String> emptyList();
-		}
+		return errors;
 	}
 	
 	@JsonSetter
-	public void setErrors(List<String> errors) {
-		this.errors = new ArrayList<String>(errors);
+	void setErrors(List<String> errors) {
+		if( errors == null || errors.size() == 0 ) {
+			this.errors = EMPTY_LIST;
+		} else {
+			this.errors = 
+				Collections.unmodifiableList( 
+					new ArrayList<String>(errors)
+				);
+		}
 	}
 }

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class FailIfOddConstraint implements IPasswordConstraintSpi {
 
 	@Override
-	public List<String> returnErrorStrings(String pwText) {
+	public List<String> returnErrorStrings(CharSequence pwText) {
 		if( (pwText.length() % 2) == 1 ) {
 			return Collections.singletonList("Password is just too odd...");
 		} else {
