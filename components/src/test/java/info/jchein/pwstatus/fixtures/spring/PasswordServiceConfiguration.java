@@ -1,4 +1,4 @@
-package info.jchein.pwstatus.spring;
+package info.jchein.pwstatus.fixtures.spring;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

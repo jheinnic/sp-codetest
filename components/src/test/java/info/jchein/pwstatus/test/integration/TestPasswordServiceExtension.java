@@ -1,15 +1,15 @@
 package info.jchein.pwstatus.test.integration;
 
-import static info.jchein.pwstatus.fixtures.ExpectedMessages.*;
 import info.jchein.pwstatus.IPasswordValidationService;
+import info.jchein.pwstatus.fixtures.scenariodata.ExpectedMessages;
+import info.jchein.pwstatus.fixtures.scenariodata.ExpectedMessages.AdditionalErrorsException;
+import info.jchein.pwstatus.fixtures.scenariodata.ExpectedMessages.BuiltInErrorKind;
+import info.jchein.pwstatus.fixtures.scenariodata.ExpectedMessages.PasswordScenario;
+import info.jchein.pwstatus.fixtures.spring.PasswordServiceConfiguration;
 import info.jchein.pwstatus.model.PasswordValidity;
-import info.jchein.pwstatus.model.PasswordValidity.ResultKind;
-import info.jchein.pwstatus.spring.PasswordServiceConfiguration;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.EnumSet;
+import java.util.Iterator;
 
 import junit.framework.TestCase;
 
@@ -24,179 +24,197 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 @ContextConfiguration(classes=PasswordServiceConfiguration.class, loader=AnnotationConfigContextLoader.class)
 public class TestPasswordServiceExtension extends TestCase {
 
+	// Subject under test from Spring context
 	@Autowired
-	IPasswordValidationService validationService;
+	private IPasswordValidationService validationService;
 	
-	private static final ArrayList<String> expectedFailure = new ArrayList<String>(3);
-	static {
-		expectedFailure.add(MAX_LENGTH_ERROR);
-		expectedFailure.add(CHAR_SET_ERROR);
-		expectedFailure.add(MIN_DIGIT_ERROR);
-		expectedFailure.add(NO_REPETITION_ERROR);
-	}
-	
+	// Iteration through scenario meta-data.  Each test case extracts is associated with one
+	// this collection, but performs the same test logic.  Each instance of scenario meta-data 
+	// includes both input to the password validation service and a description of expected
+	// results.
+	private static final Iterator<PasswordScenario> SCENARIO_ITER = 
+		ExpectedMessages.getFixtureData().iterator();
+
+	private static PasswordScenario SCENARIO_META_01 = 
+		SCENARIO_ITER.next();
 	@Test
-	public void testBasicWiringInvalidOne() {
-		assertExpectedErrors(
-			INVALID_SAMPLE_ONE_CHARS, 
-			INVALID_SAMPLE_ONE_ERRS
-		);
+	public void testScenario01() {
+		runScenario(SCENARIO_META_01);
 	}
-	
+
+	private static PasswordScenario SCENARIO_META_02 = 
+		SCENARIO_ITER.next();
 	@Test
-	public void testBasicWiringInvalidTwo() {
-		assertExpectedErrors(
-			INVALID_SAMPLE_TWO_CHARS, 
-			INVALID_SAMPLE_TWO_ERRS
-		);
+	public void testScenario02() {
+		runScenario(SCENARIO_META_02);
 	}
-	
+
+	private static PasswordScenario SCENARIO_META_03 = 
+		SCENARIO_ITER.next();
 	@Test
-	public void testBasicWiringInvalidThree() {
-		assertExpectedErrors(
-			INVALID_SAMPLE_THREE_CHARS, 
-			INVALID_SAMPLE_THREE_ERRS
-		);
+	public void testScenario03() {
+		runScenario(SCENARIO_META_03);
 	}
-	
+
+	private static PasswordScenario SCENARIO_META_04 = 
+		SCENARIO_ITER.next();
 	@Test
-	public void testBasicWiringInvalidFour() {
-		assertExpectedErrors(
-			INVALID_SAMPLE_FOUR_CHARS, 
-			INVALID_SAMPLE_FOUR_ERRS
-		);
+	public void testScenario04() {
+		runScenario(SCENARIO_META_04);
 	}
-	
+
+	private static PasswordScenario SCENARIO_META_05 = 
+		SCENARIO_ITER.next();
 	@Test
-	public void testBasicWiringInvalidFive() {
-		assertExpectedErrors(
-			INVALID_SAMPLE_FIVE_CHARS, 
-			INVALID_SAMPLE_FIVE_ERRS
-		);
+	public void testScenario05() {
+		runScenario(SCENARIO_META_05);
 	}
-	
+
+	private static PasswordScenario SCENARIO_META_06 = 
+		SCENARIO_ITER.next();
 	@Test
-	public void testBasicWiringInvalidSix() {
-		assertExpectedErrors(
-			INVALID_SAMPLE_SIX_CHARS, 
-			INVALID_SAMPLE_SIX_ERRS
-		);
+	public void testScenario06() {
+		runScenario(SCENARIO_META_06);
 	}
-	
+
+	private static PasswordScenario SCENARIO_META_07 = 
+		SCENARIO_ITER.next();
 	@Test
-	public void testBasicWiringInvalidSeven() {
-		assertExpectedErrors(
-			INVALID_SAMPLE_SEVEN_CHARS, 
-			INVALID_SAMPLE_SEVEN_ERRS
-		);
+	public void testScenario07() {
+		runScenario(SCENARIO_META_07);
 	}
-	
+
+	private static PasswordScenario SCENARIO_META_08 = 
+		SCENARIO_ITER.next();
 	@Test
-	public void testBasicWiringInvalidEight() {
-		assertExpectedErrors(
-			INVALID_SAMPLE_EIGHT_CHARS, 
-			INVALID_SAMPLE_EIGHT_ERRS
-		);
+	public void testScenario08() {
+		runScenario(SCENARIO_META_08);
 	}
-	
+
+	private static PasswordScenario SCENARIO_META_09 = 
+		SCENARIO_ITER.next();
 	@Test
-	public void testBasicWiringInvalidNine() {
-		assertExpectedErrors(
-			INVALID_SAMPLE_NINE_CHARS, 
-			INVALID_SAMPLE_NINE_ERRS
-		);
+	public void testScenario09() {
+		runScenario(SCENARIO_META_09);
 	}
-	
+
+	private static PasswordScenario SCENARIO_META_10 = 
+		SCENARIO_ITER.next();
 	@Test
-	public void testBasicWiringInvalidTen() {
-		assertExpectedErrors(
-			INVALID_SAMPLE_TEN_CHARS, 
-			INVALID_SAMPLE_TEN_ERRS
-		);
+	public void testScenario10() {
+		runScenario(SCENARIO_META_10);
 	}
-	
+
+	private static PasswordScenario SCENARIO_META_11 = 
+		SCENARIO_ITER.next();
 	@Test
-	public void testBasicWiringInvalidEleven() {
-		assertExpectedErrors(
-			INVALID_SAMPLE_ELEVEN_CHARS, 
-			INVALID_SAMPLE_ELEVEN_ERRS
-		);
+	public void testScenario11() {
+		runScenario(SCENARIO_META_11);
 	}
+
+	private static PasswordScenario SCENARIO_META_12 = 
+		SCENARIO_ITER.next();
+	@Test
+	public void testScenario12() {
+		runScenario(SCENARIO_META_12);
+	}
+
+	private static PasswordScenario SCENARIO_META_13 = 
+		SCENARIO_ITER.next();
+	@Test
+	public void testScenario13() {
+		runScenario(SCENARIO_META_13);
+	}
+
+	private static PasswordScenario SCENARIO_META_14 = 
+		SCENARIO_ITER.next();
+	@Test
+	public void testScenario14() {
+		runScenario(SCENARIO_META_14);
+	}
+
+	private static PasswordScenario SCENARIO_META_15 = 
+		SCENARIO_ITER.next();
+	@Test
+	public void testScenario15() {
+		runScenario(SCENARIO_META_15);
+	}
+
+	private static PasswordScenario SCENARIO_META_16 = 
+		SCENARIO_ITER.next();
+	@Test
+	public void testScenario16() {
+		runScenario(SCENARIO_META_16);
+	}
+
+	private static PasswordScenario SCENARIO_META_17 = 
+		SCENARIO_ITER.next();
+	@Test
+	public void testScenario17() {
+		runScenario(SCENARIO_META_17);
+	}
+
+	private static PasswordScenario SCENARIO_META_18 = 
+		SCENARIO_ITER.next();
+	@Test
+	public void testScenario18() {
+		runScenario(SCENARIO_META_18);
+	}
+
+	private static PasswordScenario SCENARIO_META_19 = 
+		SCENARIO_ITER.next();
+	@Test
+	public void testScenario19() {
+		runScenario(SCENARIO_META_19);
+	}
+
+	private static PasswordScenario SCENARIO_META_20 = 
+		SCENARIO_ITER.next();
+	@Test
+	public void testScenario20() {
+		runScenario(SCENARIO_META_20);
+	}
+
+	private static PasswordScenario SCENARIO_META_21 = 
+		SCENARIO_ITER.next();
+	@Test
+	public void testScenario21() {
+		runScenario(SCENARIO_META_21);
+	}
+
+	/**
+	 * Run the most recently dequeued test scenario.
+	 */
+	private void runScenario(PasswordScenario fixtureScenario) {
+		final PasswordValidity result = 
+			validationService.checkValidity(
+				fixtureScenario.getPasswordChars()
+			);
+		assertNotNull(result);
 		
-	private void assertExpectedErrors(
-		final char[] invalidInputPassword, 
-		final Set<String> expectedErrors
-	) {
-		final PasswordValidity result = 
-			validationService.checkValidity(invalidInputPassword);
-		assertNotNull(result);
+		EnumSet<BuiltInErrorKind> actualErrors = null;
+		try {
+			actualErrors = ExpectedMessages.toEnumSet(
+				result.getErrors()
+			);
+		} catch (AdditionalErrorsException e) {
+			fail("Expected validation of " +
+				 fixtureScenario.getPasswordString() +
+				 " to yield: " +
+				 fixtureScenario.getExpectedErrors() +
+				 "Recognized these known errors in result: " +
+				 e.getKnownErrors().toString() +
+				 "\nAdditional unrecognized and/or duplicate errors were unexpected: " +
+				 e.getAdditionalStrings().toString()
+			);
+		}
 		assertEquals(
-			expectedErrors, new HashSet<String>(result.getErrors())
+			fixtureScenario.getExpectedErrors(), actualErrors
 		);
+		
 		assertEquals(
-			ResultKind.INVALID, result.getResult()
-		);
-	}
-	
-	@Test
-	public void testValidScenarioOne() {
-		assertExpectedSuccess(VALID_SAMPLE_ONE_CHARS);
-	}
-	
-	@Test
-	public void testValidScenarioTwo() {
-		assertExpectedSuccess(VALID_SAMPLE_TWO_CHARS);
-	}
-
-	@Test
-	public void testValidScenarioThree() {
-		assertExpectedSuccess(VALID_SAMPLE_THREE_CHARS);
-	}
-
-	@Test
-	public void testValidScenarioFour() {
-		assertExpectedSuccess(VALID_SAMPLE_FOUR_CHARS);
-	}
-
-	@Test
-	public void testValidScenarioFive() {
-		assertExpectedSuccess(VALID_SAMPLE_FIVE_CHARS);
-	}
-
-	@Test
-	public void testValidScenarioSix() {
-		assertExpectedSuccess(VALID_SAMPLE_SIX_CHARS);
-	}
-
-	@Test
-	public void testValidScenarioSeven() {
-		assertExpectedSuccess(VALID_SAMPLE_SEVEN_CHARS);
-	}
-
-	@Test
-	public void testValidScenarioEight() {
-		assertExpectedSuccess(VALID_SAMPLE_EIGHT_CHARS);
-	}
-
-	@Test
-	public void testValidScenarioNine() {
-		assertExpectedSuccess(VALID_SAMPLE_NINE_CHARS);
-	}
-
-	@Test
-	public void testValidScenarioTen() {
-		assertExpectedSuccess(VALID_SAMPLE_TEN_CHARS);
-	}
-	
-	private void assertExpectedSuccess(final char[] invalidInputPassword) {
-		final PasswordValidity result = 
-			validationService.checkValidity(invalidInputPassword);
-		assertNotNull(result);
-		assertEquals(
-			Collections.emptySet(), new HashSet<String>(result.getErrors())
-		);
-		assertEquals(
-			ResultKind.VALID, result.getResult()
+			fixtureScenario.getExpectedValidity(),
+			result.getResult()
 		);
 	}
 }
