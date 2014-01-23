@@ -1,5 +1,6 @@
 package info.jchein.pwstatus.model;
 
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertNotEquals;
 import info.jchein.pwstatus.model.PasswordValidity.ResultKind;
 
@@ -8,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.cert.TrustAnchor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -50,7 +52,7 @@ public class TestPasswordValidity extends TestCase {
 			"\"An apple a day keeps the doctor away.  Apple has dumped core.  No doctor not found.\"," +
 			"\"The command could not be completed because the command completed successfully.\"]}";
 	private static final String SERIALIZED_PASS_EXPECTATION = 
-			"{\"result\":\"VALID\"}";
+			"{\"result\":\"VALID\",\"errors\":[]}";
 			
 	protected void setUp() throws IOException {
 		jsonFactory = new MappingJsonFactory();
@@ -88,26 +90,25 @@ public class TestPasswordValidity extends TestCase {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testFaultyInputHandling() {
-		testDefaultObject.setResult(null);
-		fail();
+		try {
+			testDefaultObject.setResult(null);
+			fail();
+		} catch( IllegalArgumentException e ) {
+		} catch( Throwable e ) {
+			fail();
+		}
 	}
 
-	@Test
+	@Test(expected=UnsupportedOperationException.class)
 	public void testReturnErrorListIsolation() {
-		final List<String> copyOfOriginalErrorList = new ArrayList<String>(onFailErrorsList);
 		final List<String> changeList = testFailObject.getErrors();
-		final List<String> preChangeList = testFailObject.getErrors();
-		changeList.add( "You've lost your muchiness." );
-		final List<String> postChangeList = testFailObject.getErrors(); 
-
-		// Modifying any retrieved result does not change either the list it was populated from,
-		// any other fetched result, or a subsequently fetched result
-		assertNotEquals(copyOfOriginalErrorList, changeList);
-		assertEquals(copyOfOriginalErrorList, onFailErrorsList);
-		assertEquals(copyOfOriginalErrorList, preChangeList);
-		assertEquals(copyOfOriginalErrorList, postChangeList);
-		
-		assertNotSame(postChangeList, preChangeList);
+		try {
+			changeList.add( "You've lost your muchiness." );
+			fail();
+		} catch( UnsupportedOperationException e ) {
+		} catch( Throwable e ) {
+			fail();
+		}
 	}
 	
 	@Test
@@ -130,19 +131,40 @@ public class TestPasswordValidity extends TestCase {
 	@Test
 	public void testModelUpdateIsolation() {
 		// Changing the model's list does not affect any previously received result and does
-		// actually change the return value
-		final List<String> copyOfOriginalErrorList = new ArrayList<String>(onFailErrorsList);
+		// actually change the return value.
 		final List<String> preChangeList = testFailObject.getErrors();
 		testFailObject.setErrors(alternateErrorList);
 		final List<String> postChangeList = testFailObject.getErrors(); 
 
-		assertEquals(copyOfOriginalErrorList, preChangeList);
-		assertNotEquals(copyOfOriginalErrorList, postChangeList);
-		assertEquals(copyOfOriginalErrorList, onFailErrorsList);
-		
+		assertEquals(onFailErrorsList, preChangeList);
 		assertNotEquals(alternateErrorList, preChangeList);
+		
+		assertNotEquals(onFailErrorsList, postChangeList);
 		assertEquals(alternateErrorList, postChangeList);
-		assertNotEquals(alternateErrorList, onFailErrorsList);
+		
+		assertNotSame(postChangeList, preChangeList);
+	}
+	
+	@Test
+	public void testEmptyErrorSemantics() {
+		// Default is empty
+		List<Object> emptyList = Collections.emptyList();
+		assertEquals( emptyList, testDefaultObject.getErrors() );
+		
+		// Non-empty lists cause the getter to return non-empty.
+		testDefaultObject.setErrors(onFailErrorsList);
+		assertEquals( onFailErrorsList, testDefaultObject.getErrors() );
+		assertNotEquals( emptyList, testDefaultObject.getErrors() );
+		
+		// Empty list is a valid input to setter
+		testDefaultObject.setErrors(Collections.<String>emptyList());
+		assertEquals( emptyList, testDefaultObject.getErrors() );
+		
+		// As-is null
+		testDefaultObject.setErrors(onFailErrorsList);
+		assertNotEquals( emptyList, testDefaultObject.getErrors() );
+		testDefaultObject.setErrors(null);
+		assertEquals( emptyList, testDefaultObject.getErrors() );		
 	}
 
 	@Test
