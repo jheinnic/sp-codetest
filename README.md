@@ -8,7 +8,7 @@ The implementation takes steps to discourage holding a user's password in memory
 
 ###Spring 4.0.0
 
-The password validation component depends on Spring Core and Context packages from the 4.0.0 release.  Artifacts are provided to enable reuse either through declarative XML-file configuration or imperative-style Java @Configuration beans.
+The password validation component depends on Spring Core and Context packages from the 4.0.0 release.  Artifacts are provided to enable reuse either through declarative XML-file configuration or imperative-style Java `@Configuration` annotated service beans.
 
 ###Jackson 2.1
 
@@ -16,7 +16,7 @@ To ease its reuse as a RESTful service, the entity bean modeling the return valu
 
 ###Maven
 
-The Password Validation Service was built and deployed using Maven 3.0.4.  If you also use Maven for a build system, the password validation component's release depot is blahfakeblah.artifactory.com.  The following project dependency will add the Password Validation Service's implementation to your project's classpath:
+The Password Validation Service was built and deployed using Maven 3.0.4.  If you also use Maven for a build system, the password validation component's release depot is `blahfakeblah.artifactory.com` (placeholder for a real depo if I had one to deploy into).  The following project dependency will add the Password Validation Service's implementation to your project's classpath:
 
 ```xml
     <dependency>
@@ -36,7 +36,7 @@ The Service Bean is namespaced in package `info.jchein.pwstatus.impl`.  The exam
 
 ###@Configuration Method
 
-The configuration class uses a @ComponentScan annotation to help Spring discover and wire the password validation service component:
+The configuration class uses a `@ComponentScan` annotation to help Spring discover and wire the password validation service component:
 
 ```java
 package info.jchein.pwstatus.fixtures.spring;
@@ -70,7 +70,7 @@ The context file also uses component scanning, but makes the equivalent declarat
 ##Coding Examples
 
 ###Service Consumer
-The code snippet below shows how `info.jchein.pwstatus.impl.PasswordValidationService can be used in the implementation of a method that returns without event if called with a compliant password, but throws an Exception built from a list of error messages if called with a non-compliant password.
+The code snippet below shows how `info.jchein.pwstatus.impl.PasswordValidationService` could be used to implement a method that returns if and only if called with a compliant password, and otherwise throws an Exception containing a list of error messages describing the problems that were discovered by the constraint providers.
     
 ```java
 public class MyPasswordChecker {
@@ -92,7 +92,7 @@ This code snippet illustrates a custom password constraint that enforces a passw
 
 Two notable details related to return values and exceptions are worth highlighting by way of deliberate discussion here.
 
-* Regarding return values, the Password Validation Service will interpret an empty Collection return value the same way as a null return value.  In both cases, the return value expresses that no rule encapsulated by the constraint provider class just invoked were violated.
+* Regarding return values, the Password Validation Service will interpret an empty `java.util.Collection` return value the same way as a null return value.  In both cases, the return value states no violations of any rule(s) encapsulated by the constraint's host class were found.
 
 * Regarding exceptions, if any registered constraint providers throw an unchecked exception when called, the service provider still calls the remaining providers and collects error messages, and the `getResult()` method of its return model changes.  If none of the constraint providers that returned without an Exception generate error messages, the return value changes from `VALID` to `UNKNOWN`.  Otherwise, the return value changes from `INVALID` to `UNKNOWN_INVALID`.
 
