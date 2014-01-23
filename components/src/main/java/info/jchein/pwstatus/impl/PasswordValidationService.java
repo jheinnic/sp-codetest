@@ -4,7 +4,7 @@ import info.jchein.lang.AssumptionViolatedException;
 import info.jchein.pwstatus.IPasswordValidationService;
 import info.jchein.pwstatus.model.PWStatusFactory;
 import info.jchein.pwstatus.model.PasswordValidity;
-import info.jchein.pwstatus.spi.IPasswordConstraintSpi;
+import info.jchein.pwstatus.spi.IPasswordConstraint;
 import info.jchein.pwstatus.spi.Deployed;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class PasswordValidationService implements IPasswordValidationService {
 	
     @Autowired
     @Deployed
-    Set<IPasswordConstraintSpi> constraints;
+    Set<IPasswordConstraint> constraints;
 
 	@Override
 	public PasswordValidity checkValidity(char[] pwContent) {
@@ -44,7 +44,7 @@ public class PasswordValidationService implements IPasswordValidationService {
 			// in the event of the unexpected.
 			protPwContent = ProtectedCharSequence.wrap(pwContent);
 			
-			for (final IPasswordConstraintSpi constraint : constraints) {
+			for (final IPasswordConstraint constraint : constraints) {
 				try {
 					final List<String> nextErrorList = constraint.returnErrorStrings(protPwContent);
 					if (nextErrorList != null) {

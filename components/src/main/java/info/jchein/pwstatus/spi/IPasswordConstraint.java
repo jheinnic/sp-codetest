@@ -12,7 +12,7 @@ import java.util.List;
  * @author John
  *
  */
-public interface IPasswordConstraintSpi {
+public interface IPasswordConstraint {
     /**
      * Workhorse method for password validation.
      * 

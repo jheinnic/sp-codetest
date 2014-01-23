@@ -9,7 +9,7 @@ import static org.powermock.api.easymock.PowerMock.verifyAll;
 import info.jchein.lang.AssumptionViolatedException;
 import info.jchein.pwstatus.model.PWStatusFactory;
 import info.jchein.pwstatus.model.PasswordValidity;
-import info.jchein.pwstatus.spi.IPasswordConstraintSpi;
+import info.jchein.pwstatus.spi.IPasswordConstraint;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,9 +57,9 @@ public class TestPasswordValidationService extends TestCase {
     }
 
     // True Mock objects
-    IPasswordConstraintSpi spiOne;
-    IPasswordConstraintSpi spiTwo;
-    IPasswordConstraintSpi spiThree;
+    IPasswordConstraint spiOne;
+    IPasswordConstraint spiTwo;
+    IPasswordConstraint spiThree;
 
     // Stub Objects
     Logger dummyLogger;
@@ -77,11 +77,11 @@ public class TestPasswordValidationService extends TestCase {
         
         pwValidationService = new PasswordValidationService();
         
-        spiOne = createNiceMock(IPasswordConstraintSpi.class);
-        spiTwo = createNiceMock(IPasswordConstraintSpi.class);
-        spiThree = createNiceMock(IPasswordConstraintSpi.class);
+        spiOne = createNiceMock(IPasswordConstraint.class);
+        spiTwo = createNiceMock(IPasswordConstraint.class);
+        spiThree = createNiceMock(IPasswordConstraint.class);
         
-        HashSet<IPasswordConstraintSpi> constraintSpis = new HashSet<IPasswordConstraintSpi>(4);
+        HashSet<IPasswordConstraint> constraintSpis = new HashSet<IPasswordConstraint>(4);
         constraintSpis.add(spiOne);
         constraintSpis.add(spiTwo);
         constraintSpis.add(spiThree);

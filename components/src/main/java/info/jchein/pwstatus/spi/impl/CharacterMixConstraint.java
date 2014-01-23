@@ -1,6 +1,6 @@
 package info.jchein.pwstatus.spi.impl;
 
-import info.jchein.pwstatus.spi.IPasswordConstraintSpi;
+import info.jchein.pwstatus.spi.IPasswordConstraint;
 import info.jchein.pwstatus.spi.Deployed;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Deployed
-public class CharacterMixConstraint implements IPasswordConstraintSpi {
+public class CharacterMixConstraint implements IPasswordConstraint {
 	private static final String CHARSET_REGEX = "[^a-z0-9]";
 	private static final Pattern CHARSET_PATTERN = Pattern.compile(CHARSET_REGEX);
 

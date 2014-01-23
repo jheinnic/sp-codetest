@@ -1,6 +1,6 @@
 package info.jchein.pwstatus.spi.impl;
 
-import info.jchein.pwstatus.spi.IPasswordConstraintSpi;
+import info.jchein.pwstatus.spi.IPasswordConstraint;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  * how omitting the {@link @Deployed} annotation removes a constraint class 
  * from active consideration.
  */
-public class UnderDevelopmentConstraint implements IPasswordConstraintSpi {
+public class UnderDevelopmentConstraint implements IPasswordConstraint {
 
 	@Override
 	@SuppressWarnings("null")

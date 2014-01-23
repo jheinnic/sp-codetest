@@ -1,6 +1,6 @@
 package info.jchein.pwstatus.spi.impl;
 
-import info.jchein.pwstatus.spi.IPasswordConstraintSpi;
+import info.jchein.pwstatus.spi.IPasswordConstraint;
 import info.jchein.pwstatus.spi.Deployed;
 
 import java.util.Collections;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Deployed
-public class LengthConstraint implements IPasswordConstraintSpi {
+public class LengthConstraint implements IPasswordConstraint {
 	private static final int MIN_LEN = 5;
 	private static final int MAX_LEN = 12;
 	

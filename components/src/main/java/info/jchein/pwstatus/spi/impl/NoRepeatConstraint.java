@@ -1,6 +1,6 @@
 package info.jchein.pwstatus.spi.impl;
 
-import info.jchein.pwstatus.spi.IPasswordConstraintSpi;
+import info.jchein.pwstatus.spi.IPasswordConstraint;
 import info.jchein.pwstatus.spi.Deployed;
 
 import java.util.Collections;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Deployed
-public class NoRepeatConstraint implements IPasswordConstraintSpi {
+public class NoRepeatConstraint implements IPasswordConstraint {
 	private static final String SEQ_REP_REGEX = "(...*)\\1";
 	private static final Pattern SEQ_REP_PATTERN = Pattern.compile(SEQ_REP_REGEX);
 
