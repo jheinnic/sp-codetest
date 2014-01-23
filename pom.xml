@@ -12,7 +12,6 @@
     <modules>
         <module>parent-project</module>
         <module>components</module>
-        <module>pwval-rest</module>
     </modules>
 
     <properties>
@@ -29,11 +28,6 @@
              <dependency>
                  <groupId>info.jchein.stormpath.codetest</groupId>
                  <artifactId>components</artifactId>
-                 <version>${depot.version}</version>
-             </dependency>
-             <dependency>
-                 <groupId>info.jchein.stormpath.codetest</groupId>
-                 <artifactId>pwval-rest</artifactId>
                  <version>${depot.version}</version>
              </dependency>
         </dependencies>
