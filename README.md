@@ -12,11 +12,11 @@ The password validation component depends on Spring Core and Context packages fr
 
 ###Jackson 2.1
 
-To simplify its reuse as a RESTful service, info.jchein.pwval.model.PWVerifyResult, a data entity bean that encapsulates the resultof a call into the validator's main API hook, is annotated for JSON serialization/deserialization with Jackson 2.1.
+To ease its reuse as a RESTful service, the entity bean modeling the return value from the Password Validator Service's core routine is proactively annotated for serialization by Jackson 2.1.  The model entity's bean name is `info.jchein.pwstatus.model.PasswordValidity`.
 
 ###Maven
 
-If you use Maven for a build system, the password validation component's release depot is blahfakeblah.artifactory.com.  The following project dependency will add the Password Validation Service's implementation to your project's classpath:
+The Password Validation Service was built and deployed using Maven 3.0.4.  If you also use Maven for a build system, the password validation component's release depot is blahfakeblah.artifactory.com.  The following project dependency will add the Password Validation Service's implementation to your project's classpath:
 
 ```xml
     <dependency>
@@ -24,12 +24,13 @@ If you use Maven for a build system, the password validation component's release
         <artifactId>components</artifactId>
         <version>0.1.0</version>
     </dependency>
+```
 
 #Usage
 
-The Password Validation Service can be instantiated within an application context defined either by an XML file or a Spring @Configuration annotated Java class.  Both variations lean on component scanning to locate and autowire the Password Validator Service Bean with the collection of all available Password Constraint Provider Beans.  
+The Password Validation Service can be instantiated within an application context defined either by an XML file or a Spring `@Configuration` annotated Java class.  Both variations lean on component scanning to locate and autowire the Password Validator Service Bean with the collection of all available Password Constraint Provider Beans.  
 
-The Service Bean is namespaced in package info.jchein.pwstatus.impl.  The examples that follow also use the built-in Constraint Provider Beans, which are namespaced in info.jchein.pwstatus.spi.impl.  Using separate namespaces makes it possible to replace the built-in constraint set by omitting it from component scan without compromising the flexibility of adding new package namespaces for adding java packages with additional custom constraints.
+The Service Bean is namespaced in package `info.jchein.pwstatus.impl`.  The examples that follow also use the built-in Constraint Provider Beans, which are namespaced in `info.jchein.pwstatus.spi.impl`.  Using separate namespaces makes it possible to replace the built-in constraint set by omitting it from component scan without compromising the flexibility of adding new package namespaces for adding java packages with additional custom constraints.
 
 ##Spring Context Configuration Methods
 
@@ -69,7 +70,7 @@ The context file also uses component scanning, but makes the equivalent declarat
 ##Coding Examples
 
 ###Service Consumer
-The code snippet below shows how the PasswordValidationService can be used to define a routine that returns without event if called with a compliant password, but throws an Exception built from a list of error messages if called with a non-compliant password.
+The code snippet below shows how `info.jchein.pwstatus.impl.PasswordValidationService can be used in the implementation of a method that returns without event if called with a compliant password, but throws an Exception built from a list of error messages if called with a non-compliant password.
     
 ```java
 public class MyPasswordChecker {
@@ -93,7 +94,7 @@ Two notable details related to return values and exceptions are worth highlighti
 
 * Regarding return values, the Password Validation Service will interpret an empty Collection return value the same way as a null return value.  In both cases, the return value expresses that no rule encapsulated by the constraint provider class just invoked were violated.
 
-* Regarding exceptions, if any registered constraint providers throw an unchecked exception when called, the service provider still calls the remaining providers and collects error messages, and the getResult() method of its return model changes.  If none of the constraint providers that returned without an Exception generate error messages, the return value changes from VALID to UNKNOWN.  Otherwise, the return value changes from INVALID to UNKNOWN_INVALID.
+* Regarding exceptions, if any registered constraint providers throw an unchecked exception when called, the service provider still calls the remaining providers and collects error messages, and the `getResult()` method of its return model changes.  If none of the constraint providers that returned without an Exception generate error messages, the return value changes from `VALID` to `UNKNOWN`.  Otherwise, the return value changes from `INVALID` to `UNKNOWN_INVALID`.
 
 ```java
 package info.jchein.pwstatus.spi.impl;
