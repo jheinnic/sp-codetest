@@ -39,9 +39,18 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
+
         
         <!-- Logging dependencies acquired transitively from parent -->
 
-        <!-- Testing dependencies are all acquired from parent -->
+
+        <!-- Testing dependencies are MOSTLY acquired from parent -->
+
+        <!-- Memory buffering of JSON Serialization -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
