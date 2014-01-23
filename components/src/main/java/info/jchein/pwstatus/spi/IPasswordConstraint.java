@@ -1,6 +1,8 @@
 package info.jchein.pwstatus.spi;
 
-import java.util.List;
+import info.jchein.pwstatus.IPasswordValidationService;
+
+import java.util.Collection;
 
 /**
  * Service provider plugin interface for contributors of validation constraint logic to 
@@ -25,5 +27,5 @@ public interface IPasswordConstraint {
      * cannot be pro-actively zeroed out before the operation completes.
      * @see ProtectedCharSequence
      */
-	public List<String> returnErrorStrings(CharSequence pwText);
+	public Collection<String> returnErrorStrings(CharSequence pwText);
 }
