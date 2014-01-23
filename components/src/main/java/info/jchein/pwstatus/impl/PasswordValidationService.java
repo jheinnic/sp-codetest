@@ -37,11 +37,13 @@ public class PasswordValidationService implements IPasswordValidationService {
 		// and leave a little room for worst case scenario messages from other plugins.  It's just a
 		// default size, no harm in being too few or too many.
 		final ArrayList<String> errorsFound = new ArrayList<String>(8);
+		ProtectedCharSequence protPwContent = null;
 		
-		// Wrap the character array and use a try block to make sure we clean up afterwards, even 
-		// in the event of the unexpected.
-		final ProtectedCharSequence protPwContent = ProtectedCharSequence.wrap(pwContent);
 		try {
+			// Wrap the character array and use a try block to make sure we clean up afterwards, even 
+			// in the event of the unexpected.
+			protPwContent = ProtectedCharSequence.wrap(pwContent);
+			
 			for (final IPasswordConstraintSpi constraint : constraints) {
 				try {
 					final List<String> nextErrorList = constraint.returnErrorStrings(protPwContent);
@@ -50,7 +52,7 @@ public class PasswordValidationService implements IPasswordValidationService {
 					}
 				} catch (Throwable e) {
 					allTestsEvaluated = false;
-					LOG.warn("Unexpected exception thrown by %s", constraint.getClass().getName());
+					LOG.warn("Unexpected exception thrown by " + constraint.getClass().getName());
 				}
 			}
 			

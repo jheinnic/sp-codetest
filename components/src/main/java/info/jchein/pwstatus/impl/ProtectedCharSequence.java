@@ -94,13 +94,10 @@ final class ProtectedCharSequence implements CharSequence {
 
 	@Override
 	public String toString() {
-		return "";
-		/*
 		throw 
 			new UnsupportedOperationException(
 				"Sensitive data must not be transformed to an immutable representation/."
 			);
-		*/
 	}
 	
 	void destroy() {

@@ -66,6 +66,8 @@ public class PasswordValidity implements Serializable {
     
     @JsonSetter
 	void setResult(ResultKind result) {
+    	if( result == null ) { throw new IllegalArgumentException(); }
+    	
 		this.result = result;
 	}
 	
