@@ -5,17 +5,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	default-lazy-init="true" >
-    !-- This file is meant to be consumed by means of <import>ing it alongside any number of auxiliary
-         context fragments that either explicitly instantiate one or more annotated instances of the
-         plugin interface, org.jchein.pwval.spi.IPasswordConstraint or locates them implicitly by
-         <component-scan>, such that the constraints so-named as eligible for Autowire binding when
-         "pwval", below, is instantiated and wired by Spring.  See the src/test/resources directory for
-         a demonstration. --> 
-
-
-    <!-- This locates the info.jchein.pwval.PWValidator component Bean and makes it eligible for
-         lazy instantiation as an @Autowired dependency or by explicitly binding a bean with its name, 
-         "pwval". -->
+    
     <context:component-scan base-package="info.jchein.pwstatus.spi.impl info.jchein.pwstatus.impl" />
 </beans>
 

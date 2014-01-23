@@ -1,15 +1,12 @@
 package info.jchein.pwstatus.model;
 
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertNotEquals;
 import info.jchein.pwstatus.model.PasswordValidity.ResultKind;
 
-import java.awt.image.SampleModel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.security.cert.TrustAnchor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -18,7 +15,6 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.junit.Test;
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -34,8 +30,6 @@ public class TestPasswordValidity extends TestCase {
 	private JsonGenerator jsonGenerator;
 	
 	// Subject Under Test
-	private PasswordValidity testObject;
-
 	private PasswordValidity testDefaultObject;
 
 	private PasswordValidity testPassObject;
