@@ -8,7 +8,7 @@
     <parent>
         <groupId>info.jchein.stormpath.codetest</groupId>
         <artifactId>parent-project</artifactId>
-        <version>${depot.version}</version>
+        <version>0.1.0</version>
         <relativePath>..\parent-project\pom.xml</relativePath>
     </parent>
 
