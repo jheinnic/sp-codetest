@@ -30,7 +30,7 @@
 	<!-- Maven plugin versions -->
         <build-helper.plugin-version>1.8</build-helper.plugin-version>
         <exec-maven.plugin-version>1.2.1</exec-maven.plugin-version>
-        <maven-antrun-plugin.version>1.7</version>
+        <maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
         <maven-assembly.plugin-version>2.4</maven-assembly.plugin-version>
         <maven-clean.plugin-version>2.5</maven-clean.plugin-version>
         <maven-compiler.plugin-version>3.1</maven-compiler.plugin-version>
