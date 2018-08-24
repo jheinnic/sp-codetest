@@ -1,20 +1,20 @@
-#Description
+# Description
 
 The password validation component provides a facility for evaluating whether a candidate password conforms to a customizable set of acceptance criteria.  Inputs that violate any criteria are flagged and a summary list of rule violations is returned.
 
 The implementation takes steps to discourage holding a user's password in memory as a immutable String, making it possible to remove the input from memory before returning rather than needing to wait on garbage collection followed by new allocation to overwrite its content, leaving sensitive input far less vulnerable to memory mapping attacks.
 
-#Requirements
+# Requirements
 
-###Spring 4.0.0
+### Spring 4.0.0
 
 The password validation component depends on Spring Core and Context packages from the 4.0.0 release.  Artifacts are provided to enable reuse either through declarative XML-file configuration or imperative-style Java `@Configuration` annotated service beans.
 
-###Jackson 2.1
+### Jackson 2.1
 
 To ease its reuse as a RESTful service, the entity bean modeling the return value from the Password Validator Service's core routine is proactively annotated for serialization by Jackson 2.1.  The model entity's bean name is `info.jchein.pwstatus.model.PasswordValidity`.
 
-###Maven
+### Maven
 
 The Password Validation Service was built and deployed using Maven 3.0.4.  If you also use Maven for a build system, the password validation component's release depot is `blahfakeblah.artifactory.com` (placeholder for a real depo if I had one to deploy into).  The following project dependency will add the Password Validation Service's implementation to your project's classpath:
 
@@ -26,15 +26,15 @@ The Password Validation Service was built and deployed using Maven 3.0.4.  If yo
     </dependency>
 ```
 
-#Usage
+# Usage
 
 The Password Validation Service can be instantiated within an application context defined either by an XML file or a Spring `@Configuration` annotated Java class.  Both variations lean on component scanning to locate and autowire the Password Validator Service Bean with the collection of all available Password Constraint Provider Beans.  
 
 The Service Bean is namespaced in package `info.jchein.pwstatus.impl`.  The examples that follow also use the built-in Constraint Provider Beans, which are namespaced in `info.jchein.pwstatus.spi.impl`.  Using separate namespaces makes it possible to replace the built-in constraint set by omitting it from component scan without compromising the flexibility of adding new package namespaces for adding java packages with additional custom constraints.
 
-##Spring Context Configuration Methods
+## Spring Context Configuration Methods
 
-###@Configuration Method
+### @Configuration Method
 
 The configuration class uses a `@ComponentScan` annotation to help Spring discover and wire the password validation service component:
 
@@ -51,7 +51,7 @@ import org.springframework.context.annotation.Configuration;
 public class PasswordServiceConfiguration { }
 ```
 
-###Context File Method
+### Context File Method
 The context file also uses component scanning, but makes the equivalent declaration within an XML context file rather than a Java Class Annotation:
 
 ```xml
@@ -67,9 +67,9 @@ The context file also uses component scanning, but makes the equivalent declarat
 </beans>
 ```
 
-##Coding Examples
+## Coding Examples
 
-###Service Consumer
+### Service Consumer
 The code snippet below shows how `info.jchein.pwstatus.impl.PasswordValidationService` could be used to implement a method that returns if and only if called with a compliant password, and otherwise throws an Exception containing a list of error messages describing the problems that were discovered by the constraint providers.
     
 ```java
@@ -87,7 +87,7 @@ public class MyPasswordChecker {
 }
 ```
 
-###Constraint Provider
+### Constraint Provider
 This code snippet illustrates a custom password constraint that enforces a password length between 5 and 12 characters.  The key observations to make are the location of the interface the constraint developer implements and the two class annotations required for the implementation to be eligible for auto-wiring through context scanning.
 
 Two notable details related to return values and exceptions are worth highlighting by way of deliberate discussion here.
